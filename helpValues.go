@@ -246,7 +246,7 @@ func (h *Help) AddFlagToHelp(f HelpFlag) {
 
 // getLongestNameLength takes a slice of any supported flag and returns the length of the longest of their names
 func getLongestNameLength(slice interface{}, min int) int {
-	var maxLength = min
+	maxLength := min
 
 	s := reflect.ValueOf(slice)
 	if s.Kind() != reflect.Slice {

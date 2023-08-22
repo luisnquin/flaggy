@@ -7,10 +7,9 @@ import (
 )
 
 func main() {
-
 	// Declare variables and their defaults
-	var someString = ""
-	var someInt = 3
+	someString := ""
+	someInt := 3
 	var someBool bool
 	var positionalValue string
 

@@ -7,7 +7,6 @@ package flaggy
 // into the appropriate flag value.  We stop assigning values as soon
 // as we find a any parser that accepts it.
 func setValueForParsers(key string, value string, parsers ...ArgumentParser) (bool, error) {
-
 	for _, p := range parsers {
 		valueWasSet, err := p.SetValueForKey(key, value)
 		if err != nil {

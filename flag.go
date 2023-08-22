@@ -36,7 +36,6 @@ func (f *Flag) HasName(name string) bool {
 // and assigns it to the AssignmentVar pointer's target value.  If
 // the value is a type that needs parsing, that is performed as well.
 func (f *Flag) identifyAndAssignValue(value string) error {
-
 	var err error
 
 	// Only parse this flag default value once. This keeps us from
@@ -334,15 +333,16 @@ func (f *Flag) identifyAndAssignValue(value string) error {
 	return err
 }
 
-const argIsPositional = "positional"       // subcommand or positional value
-const argIsFlagWithSpace = "flagWithSpace" // -f path or --file path
-const argIsFlagWithValue = "flagWithValue" // -f=path or --file=path
-const argIsFinal = "final"                 // the final argument only '--'
+const (
+	argIsPositional    = "positional"    // subcommand or positional value
+	argIsFlagWithSpace = "flagWithSpace" // -f path or --file path
+	argIsFlagWithValue = "flagWithValue" // -f=path or --file=path
+	argIsFinal         = "final"         // the final argument only '--'
+)
 
 // determineArgType determines if the specified arg is a flag with space
 // separated value, a flag with a connected value, or neither (positional)
 func determineArgType(arg string) string {
-
 	// if the arg is --, then its the final arg
 	if arg == "--" {
 		return argIsFinal
@@ -372,7 +372,6 @@ func determineArgType(arg string) string {
 // parseArgWithValue parses a key=value concatenated argument into a key and
 // value
 func parseArgWithValue(arg string) (key string, value string) {
-
 	// remove up to two minuses from start of flag
 	arg = strings.TrimPrefix(arg, "-")
 	arg = strings.TrimPrefix(arg, "-")
@@ -398,8 +397,9 @@ func parseArgWithValue(arg string) (key string, value string) {
 }
 
 // parseFlagToName parses a flag with space value down to a key name:
-//     --path -> path
-//     -p -> p
+//
+//	--path -> path
+//	-p -> p
 func parseFlagToName(arg string) string {
 	// remove minus from start
 	arg = strings.TrimLeft(arg, "-")
@@ -408,7 +408,8 @@ func parseFlagToName(arg string) string {
 }
 
 // collectAllNestedFlags recurses through the command tree to get all
-//     flags specified on a subcommand and its descending subcommands
+//
+//	flags specified on a subcommand and its descending subcommands
 func collectAllNestedFlags(sc *Subcommand) []*Flag {
 	fullList := sc.Flags
 	for _, sc := range sc.Subcommands {
@@ -439,7 +440,6 @@ func flagIsBool(sc *Subcommand, p *Parser, key string) bool {
 // assignment variable as a string.  This is used to display the
 // default value of flags before they are assigned (like when help is output).
 func (f *Flag) returnAssignmentVarValueAsString() (string, error) {
-
 	debugPrint("returning current value of assignment var of flag", f.LongName)
 
 	var err error

@@ -7,10 +7,9 @@ import (
 )
 
 func main() {
-
 	// Declare variables and their defaults
-	var stringFlagF = "defaultValueF"
-	var intFlagT = 3
+	stringFlagF := "defaultValueF"
+	intFlagT := 3
 	var boolFlagB bool
 
 	// Create the subcommand

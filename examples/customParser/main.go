@@ -8,11 +8,13 @@ import (
 
 // Declare variables and their defaults
 var positionalValue = "defaultString"
-var intFlagT = 3
-var boolFlagB bool
+
+var (
+	intFlagT  = 3
+	boolFlagB bool
+)
 
 func main() {
-
 	// set a description, name, and version for our parser
 	p := flaggy.NewParser("myAppName")
 	p.Description = "This parser just shows you how to make a parser."

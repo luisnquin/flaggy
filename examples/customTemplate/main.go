@@ -26,7 +26,7 @@ const helpTemplate = `{{.CommandName}}{{if .Description}} - {{.Description}}{{en
 
 func main() {
 	// Declare variables and their defaults
-	var stringFlag = "defaultValue"
+	stringFlag := "defaultValue"
 
 	// Add a flag
 	flaggy.String(&stringFlag, "f", "flag", "A test string flag")

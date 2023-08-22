@@ -9,7 +9,6 @@ import (
 
 // TestTrailingArgumentsDashes tests trailing argument parsing when --- is used
 func TestTrailingArgumentsDashes(t *testing.T) {
-
 	flaggy.ResetParser()
 	args := []string{"./flaggy.test", "--", "one", "two"}
 	os.Args = args
@@ -29,7 +28,6 @@ func TestTrailingArgumentsDashes(t *testing.T) {
 
 // TestTrailingArgumentsNoDashes tests trailing argument parsing without using ---
 func TestTrailingArgumentsNoDashes(t *testing.T) {
-
 	flaggy.ResetParser()
 	var positionalValue string
 	args := []string{"./flaggy.test", "positional", "one", "two"}
@@ -59,7 +57,6 @@ func TestTrailingArgumentsNoDashes(t *testing.T) {
 // TestComplexNesting tests various levels of nested subcommands and
 // positional values intermixed with eachother.
 func TestComplexNesting(t *testing.T) {
-
 	flaggy.DebugMode = true
 	defer debugOff()
 
@@ -140,7 +137,6 @@ func TestComplexNesting(t *testing.T) {
 	if subcommandName := flaggy.DefaultParser.TrailingSubcommand().Name; subcommandName != "scD" {
 		t.Fatal("Used subcommand was incorrect:", subcommandName)
 	}
-
 }
 
 func TestParsePositionalsA(t *testing.T) {
@@ -212,5 +208,4 @@ func TestParsePositionalsA(t *testing.T) {
 	if subcommandName := parser.TrailingSubcommand().Name; subcommandName != "subcommand" {
 		t.Fatal("Used subcommand was incorrect:", subcommandName)
 	}
-
 }

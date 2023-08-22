@@ -25,7 +25,6 @@ func TestGlobs(t *testing.T) {
 }
 
 func TestParseArgWithValue(t *testing.T) {
-
 	testCases := make(map[string][]string)
 	testCases["-f=test"] = []string{"f", "test"}
 	testCases["--f=test"] = []string{"f", "test"}
@@ -48,7 +47,6 @@ func TestParseArgWithValue(t *testing.T) {
 }
 
 func TestDetermineArgType(t *testing.T) {
-
 	testCases := make(map[string]string)
 	testCases["-f"] = argIsFlagWithSpace
 	testCases["--f"] = argIsFlagWithSpace
@@ -84,40 +82,40 @@ func TestInputParsing(t *testing.T) {
 
 	// Setup input arguments for every input type
 
-	var stringFlag = "defaultVar"
+	stringFlag := "defaultVar"
 	String(&stringFlag, "s", "string", "string flag")
 	inputArgs = append(inputArgs, "-s", "flaggy")
-	var stringFlagExpected = "flaggy"
+	stringFlagExpected := "flaggy"
 
 	var stringSliceFlag []string
 	StringSlice(&stringSliceFlag, "ssf", "stringSlice", "string slice flag")
 	inputArgs = append(inputArgs, "-ssf", "one", "-ssf", "two")
-	var stringSliceFlagExpected = []string{"one", "two"}
+	stringSliceFlagExpected := []string{"one", "two"}
 
 	var boolFlag bool
 	Bool(&boolFlag, "bf", "bool", "bool flag")
 	inputArgs = append(inputArgs, "-bf")
-	var boolFlagExpected = true
+	boolFlagExpected := true
 
 	var boolSliceFlag []bool
 	BoolSlice(&boolSliceFlag, "bsf", "boolSlice", "bool slice flag")
 	inputArgs = append(inputArgs, "-bsf", "-bsf")
-	var boolSliceFlagExpected = []bool{true, true}
+	boolSliceFlagExpected := []bool{true, true}
 
 	var byteSliceFlag []byte
 	ByteSlice(&byteSliceFlag, "bysf", "byteSlice", "byte slice flag")
 	inputArgs = append(inputArgs, "-bysf", "17", "-bysf", "18")
-	var byteSliceFlagExpected = []uint8{17, 18}
+	byteSliceFlagExpected := []uint8{17, 18}
 
 	var durationFlag time.Duration
 	Duration(&durationFlag, "df", "duration", "duration flag")
 	inputArgs = append(inputArgs, "-df", "33s")
-	var durationFlagExpected = time.Second * 33
+	durationFlagExpected := time.Second * 33
 
 	var durationSliceFlag []time.Duration
 	DurationSlice(&durationSliceFlag, "dsf", "durationSlice", "duration slice flag")
 	inputArgs = append(inputArgs, "-dsf", "33s", "-dsf", "1h")
-	var durationSliceFlagExpected = []time.Duration{time.Second * 33, time.Hour}
+	durationSliceFlagExpected := []time.Duration{time.Second * 33, time.Hour}
 
 	var float32Flag float32
 	Float32(&float32Flag, "f32", "float32", "float32 flag")
@@ -127,27 +125,27 @@ func TestInputParsing(t *testing.T) {
 	var float32SliceFlag []float32
 	Float32Slice(&float32SliceFlag, "f32s", "float32Slice", "float32 slice flag")
 	inputArgs = append(inputArgs, "-f32s", "33.343", "-f32s", "33.222")
-	var float32SliceFlagExpected = []float32{33.343, 33.222}
+	float32SliceFlagExpected := []float32{33.343, 33.222}
 
 	var float64Flag float64
 	Float64(&float64Flag, "f64", "float64", "float64 flag")
 	inputArgs = append(inputArgs, "-f64", "33.222343")
-	var float64FlagExpected = 33.222343
+	float64FlagExpected := 33.222343
 
 	var float64SliceFlag []float64
 	Float64Slice(&float64SliceFlag, "f64s", "float64Slice", "float64 slice flag")
 	inputArgs = append(inputArgs, "-f64s", "64.343", "-f64s", "64.222")
-	var float64SliceFlagExpected = []float64{64.343, 64.222}
+	float64SliceFlagExpected := []float64{64.343, 64.222}
 
 	var intFlag int
 	Int(&intFlag, "i", "int", "int flag")
 	inputArgs = append(inputArgs, "-i", "3553")
-	var intFlagExpected = 3553
+	intFlagExpected := 3553
 
 	var intSliceFlag []int
 	IntSlice(&intSliceFlag, "is", "intSlice", "int slice flag")
 	inputArgs = append(inputArgs, "-is", "6446", "-is", "64")
-	var intSliceFlagExpected = []int{6446, 64}
+	intSliceFlagExpected := []int{6446, 64}
 
 	var uintFlag uint
 	UInt(&uintFlag, "ui", "uint", "uint flag")
@@ -157,7 +155,7 @@ func TestInputParsing(t *testing.T) {
 	var uintSliceFlag []uint
 	UIntSlice(&uintSliceFlag, "uis", "uintSlice", "uint slice flag")
 	inputArgs = append(inputArgs, "-uis", "6446", "-uis", "64")
-	var uintSliceFlagExpected = []uint{6446, 64}
+	uintSliceFlagExpected := []uint{6446, 64}
 
 	var uint64Flag uint64
 	UInt64(&uint64Flag, "ui64", "uint64", "uint64 flag")
@@ -167,7 +165,7 @@ func TestInputParsing(t *testing.T) {
 	var uint64SliceFlag []uint64
 	UInt64Slice(&uint64SliceFlag, "ui64s", "uint64Slice", "uint64 slice flag")
 	inputArgs = append(inputArgs, "-ui64s", "6446", "-ui64s", "64")
-	var uint64SliceFlagExpected = []uint64{6446, 64}
+	uint64SliceFlagExpected := []uint64{6446, 64}
 
 	var uint32Flag uint32
 	UInt32(&uint32Flag, "ui32", "uint32", "uint32 flag")
@@ -177,7 +175,7 @@ func TestInputParsing(t *testing.T) {
 	var uint32SliceFlag []uint32
 	UInt32Slice(&uint32SliceFlag, "ui32s", "uint32Slice", "uint32 slice flag")
 	inputArgs = append(inputArgs, "-ui32s", "6446", "-ui32s", "64")
-	var uint32SliceFlagExpected = []uint32{6446, 64}
+	uint32SliceFlagExpected := []uint32{6446, 64}
 
 	var uint16Flag uint16
 	UInt16(&uint16Flag, "ui16", "uint16", "uint16 flag")
@@ -187,7 +185,7 @@ func TestInputParsing(t *testing.T) {
 	var uint16SliceFlag []uint16
 	UInt16Slice(&uint16SliceFlag, "ui16s", "uint16Slice", "uint16 slice flag")
 	inputArgs = append(inputArgs, "-ui16s", "6446", "-ui16s", "64")
-	var uint16SliceFlagExpected = []uint16{6446, 64}
+	uint16SliceFlagExpected := []uint16{6446, 64}
 
 	var uint8Flag uint8
 	UInt8(&uint8Flag, "ui8", "uint8", "uint8 flag")
@@ -197,7 +195,7 @@ func TestInputParsing(t *testing.T) {
 	var uint8SliceFlag []uint8
 	UInt8Slice(&uint8SliceFlag, "ui8s", "uint8Slice", "uint8 slice flag")
 	inputArgs = append(inputArgs, "-ui8s", "3", "-ui8s", "2")
-	var uint8SliceFlagExpected = []uint8{uint8(3), uint8(2)}
+	uint8SliceFlagExpected := []uint8{uint8(3), uint8(2)}
 
 	var int64Flag int64
 	Int64(&int64Flag, "i64", "i64", "int64 flag")
@@ -210,7 +208,7 @@ func TestInputParsing(t *testing.T) {
 		t.Fatal(err)
 	}
 	inputArgs = append(inputArgs, "-i64s", "40", "-i64s", "50")
-	var int64SliceFlagExpected = []int64{40, 50}
+	int64SliceFlagExpected := []int64{40, 50}
 
 	var int32Flag int32
 	Int32(&int32Flag, "i32", "int32", "int32 flag")
@@ -220,7 +218,7 @@ func TestInputParsing(t *testing.T) {
 	var int32SliceFlag []int32
 	Int32Slice(&int32SliceFlag, "i32s", "int32Slice", "uint32 slice flag")
 	inputArgs = append(inputArgs, "-i32s", "40", "-i32s", "50")
-	var int32SliceFlagExpected = []int32{40, 50}
+	int32SliceFlagExpected := []int32{40, 50}
 
 	var int16Flag int16
 	Int16(&int16Flag, "i16", "int16", "int16 flag")
@@ -233,7 +231,7 @@ func TestInputParsing(t *testing.T) {
 	var int16SliceFlag []int16
 	Int16Slice(&int16SliceFlag, "i16s", "int16Slice", "int16 slice flag")
 	inputArgs = append(inputArgs, "-i16s", "40", "-i16s", "50")
-	var int16SliceFlagExpected = []int16{40, 50}
+	int16SliceFlagExpected := []int16{40, 50}
 
 	var int8Flag int8
 	Int8(&int8Flag, "i8", "int8", "int8 flag")
@@ -243,17 +241,17 @@ func TestInputParsing(t *testing.T) {
 	var int8SliceFlag []int8
 	Int8Slice(&int8SliceFlag, "i8s", "int8Slice", "uint8 slice flag")
 	inputArgs = append(inputArgs, "-i8s", "4", "-i8s", "2")
-	var int8SliceFlagExpected = []int8{4, 2}
+	int8SliceFlagExpected := []int8{4, 2}
 
 	var ipFlag net.IP
 	IP(&ipFlag, "ip", "ipFlag", "ip flag")
 	inputArgs = append(inputArgs, "-ip", "1.1.1.1")
-	var ipFlagExpected = net.IPv4(1, 1, 1, 1)
+	ipFlagExpected := net.IPv4(1, 1, 1, 1)
 
 	var ipSliceFlag []net.IP
 	IPSlice(&ipSliceFlag, "ips", "ipFlagSlice", "ip slice flag")
 	inputArgs = append(inputArgs, "-ips", "1.1.1.1", "-ips", "4.4.4.4")
-	var ipSliceFlagExpected = []net.IP{net.IPv4(1, 1, 1, 1), net.IPv4(4, 4, 4, 4)}
+	ipSliceFlagExpected := []net.IP{net.IPv4(1, 1, 1, 1), net.IPv4(4, 4, 4, 4)}
 
 	var hwFlag net.HardwareAddr
 	HardwareAddr(&hwFlag, "hw", "hwFlag", "hw flag")
@@ -274,12 +272,12 @@ func TestInputParsing(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	var hwFlagSliceExpected = []net.HardwareAddr{macA, macB}
+	hwFlagSliceExpected := []net.HardwareAddr{macA, macB}
 
 	var maskFlag net.IPMask
 	IPMask(&maskFlag, "m", "mFlag", "mask flag")
 	inputArgs = append(inputArgs, "-m", "255.255.255.255")
-	var maskFlagExpected = net.IPMask([]byte{255, 255, 255, 255})
+	maskFlagExpected := net.IPMask([]byte{255, 255, 255, 255})
 
 	var maskSliceFlag []net.IPMask
 	IPMaskSlice(&maskSliceFlag, "ms", "mFlagSlice", "mask slice flag")
@@ -287,7 +285,7 @@ func TestInputParsing(t *testing.T) {
 		t.Fatal(err)
 	}
 	inputArgs = append(inputArgs, "-ms", "255.255.255.255", "-ms", "255.255.255.0")
-	var maskSliceFlagExpected = []net.IPMask{net.IPMask([]byte{255, 255, 255, 255}), net.IPMask([]byte{255, 255, 255, 0})}
+	maskSliceFlagExpected := []net.IPMask{net.IPMask([]byte{255, 255, 255, 255}), net.IPMask([]byte{255, 255, 255, 0})}
 
 	// display help with all flags used
 	ShowHelp("Showing help for test: " + t.Name())

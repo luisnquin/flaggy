@@ -18,8 +18,11 @@ import (
 
 // strings used for builtin help and version flags both short and long
 const versionFlagLongName = "version"
-const helpFlagLongName = "help"
-const helpFlagShortName = "h"
+
+const (
+	helpFlagLongName  = "help"
+	helpFlagShortName = "h"
+)
 
 // defaultVersion is applied to parsers when they are created
 const defaultVersion = "0.0.0"
@@ -40,7 +43,6 @@ var DefaultParser *Parser
 var TrailingArguments []string
 
 func init() {
-
 	// set the default help template
 	// allow usage like flaggy.StringVar by enabling a default Parser
 	ResetParser()

@@ -7,7 +7,6 @@ var stringFlagA = "defaultValueA"
 var stringFlagB = "defaultValueB"
 
 func main() {
-
 	// Add a flag to the root of flaggy
 	flaggy.String(&stringFlagA, "a", "flagA", "A test string flag (A)")
 

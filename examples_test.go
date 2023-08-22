@@ -10,7 +10,6 @@ import (
 // ExampleSubcommand_AddPositionalValue adds two levels of subcommands with a
 // positional value on the second level one
 func ExampleSubcommand_AddPositionalValue() {
-
 	// Simulate some input from the CLI.  Don't do this in your program.
 	flaggy.ResetParser()
 	os.Args = []string{"binaryName", "subcommandA", "subcommandB", "subcommandBPositionalValue"}
@@ -46,7 +45,6 @@ func ExampleSubcommand_AddPositionalValue() {
 // ExamplePositionalValue shows how to add positional variables at the
 // global level.
 func ExamplePositionalValue() {
-
 	// Simulate some input from the CLI.  Don't do this in your program.
 	flaggy.ResetParser()
 	os.Args = []string{"binaryName", "positionalValue"}
@@ -71,7 +69,6 @@ func ExamplePositionalValue() {
 
 // ExampleBoolFlag shows how to global bool flags in your program.
 func ExampleBool() {
-
 	// Simulate some input from the CLI.  Don't do these two lines in your program.
 	flaggy.ResetParser()
 	os.Args = []string{"binaryName", "-f"}
@@ -98,7 +95,6 @@ func ExampleBool() {
 
 // ExampleIntFlag shows how to global int flags in your program.
 func ExampleInt() {
-
 	// Simulate some input from the CLI.  Don't do these two lines in your program.
 	flaggy.ResetParser()
 	os.Args = []string{"binaryName", "-f", "5"}
@@ -125,7 +121,6 @@ func ExampleInt() {
 
 // Example shows how to add string flags in your program.
 func Example() {
-
 	// Simulate some input from the CLI.  Don't do this in your program.
 	flaggy.ResetParser()
 	os.Args = []string{"binaryName", "-f", "flagName"}
@@ -152,7 +147,6 @@ func Example() {
 
 // ExampleSubcommand shows usage of subcommands in flaggy.
 func ExampleSubcommand() {
-
 	// Do not include the following two lines in your real program, it is for this
 	// example only:
 	flaggy.ResetParser()
