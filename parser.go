@@ -25,6 +25,11 @@ type Parser struct {
 	subcommandContext          *Subcommand        // points to the most specific subcommand being used
 }
 
+type templateHelpers struct {
+	Help
+	template.FuncMap
+}
+
 // TrailingSubcommand returns the last and most specific subcommand invoked.
 func (p *Parser) TrailingSubcommand() *Subcommand {
 	return p.subcommandContext
@@ -162,6 +167,7 @@ func (p *Parser) ShowVersionAndExit() {
 func (p *Parser) SetHelpTemplate(tmpl string) error {
 	var err error
 	p.HelpTemplate = template.New(helpFlagLongName)
+	p.HelpTemplate.Funcs(getTemplateStyleFuncs())
 	p.HelpTemplate, err = p.HelpTemplate.Parse(tmpl)
 	if err != nil {
 		return err
@@ -193,6 +199,7 @@ func (p *Parser) ShowHelpWithMessage(message string) {
 	// create a new Help values template and extract values into it
 	help := Help{}
 	help.ExtractValues(p, message)
+
 	err := p.HelpTemplate.Execute(os.Stderr, help)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "Error rendering Help template:", err)
