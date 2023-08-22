@@ -121,7 +121,7 @@ func findArgsNotInParsedValues(args []string, parsedValues []parsedValue) []stri
 
 		// search all args for a corresponding parsed value
 		for _, pv := range parsedValues {
-			// this argumenet was a key
+			// this argument was a key
 			// debugPrint(pv.Key, "==", arg)
 			debugPrint(pv.Key + "==" + arg + " || (" + strconv.FormatBool(pv.IsPositional) + " && " + pv.Value + " == " + arg + ")")
 			if pv.Key == arg || (pv.IsPositional && pv.Value == arg) {
