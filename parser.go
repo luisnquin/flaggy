@@ -6,7 +6,6 @@ import (
 	"os"
 	"strconv"
 	"strings"
-
 	"text/template"
 )
 
@@ -154,7 +153,7 @@ func findArgsNotInParsedValues(args []string, parsedValues []parsedValue) []stri
 
 // ShowVersionAndExit shows the version of this parser
 func (p *Parser) ShowVersionAndExit() {
-	fmt.Println("Version:", p.Version)
+	fmt.Fprintln(os.Stdout, p.Version)
 	exitOrPanic(0)
 }
 
@@ -191,7 +190,6 @@ func (p *Parser) ShowHelpAndExit(message string) {
 // message as a header.  The supplied subcommand will be the context of Help
 // displayed to the user.
 func (p *Parser) ShowHelpWithMessage(message string) {
-
 	// create a new Help values template and extract values into it
 	help := Help{}
 	help.ExtractValues(p, message)
