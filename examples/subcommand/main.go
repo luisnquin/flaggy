@@ -1,10 +1,12 @@
 package main
 
-import "github.com/integrii/flaggy"
+import "github.com/luisnquin/flaggy"
 
 // Declare variables and their defaults
-var stringFlagA = "defaultValueA"
-var stringFlagB = "defaultValueB"
+var (
+	stringFlagA = "defaultValueA"
+	stringFlagB = "defaultValueB"
+)
 
 func main() {
 	// Add a flag to the root of flaggy

@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/google/go-cmp/cmp"
-	"github.com/integrii/flaggy"
+	"github.com/luisnquin/flaggy"
 )
 
 func TestMinimalHelpOutput(t *testing.T) {
@@ -71,7 +71,7 @@ func TestHelpOutput(t *testing.T) {
 	// defer debugOff()
 
 	p := flaggy.NewParser("testCommand")
-	p.Description = "Description goes here.  Get more information at https://github.com/integrii/flaggy."
+	p.Description = "Description goes here.  Get more information at https://github.com/luisnquin/flaggy."
 	scA := flaggy.NewSubcommand("subcommandA")
 	scA.ShortName = "a"
 	scA.Description = "Subcommand A is a command that does stuff"

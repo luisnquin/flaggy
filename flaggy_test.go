@@ -4,7 +4,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/integrii/flaggy"
+	"github.com/luisnquin/flaggy"
 )
 
 // TestTrailingArgumentsDashes tests trailing argument parsing when --- is used

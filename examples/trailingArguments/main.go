@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/integrii/flaggy"
+	"github.com/luisnquin/flaggy"
 )
 
 func main() {

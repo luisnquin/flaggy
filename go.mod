@@ -1,4 +1,4 @@
-module github.com/integrii/flaggy
+module github.com/luisnquin/flaggy
 
 go 1.12
 
