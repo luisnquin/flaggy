@@ -1,26 +1,26 @@
-<p align="center">
 
-<img src="https://raw.githubusercontent.com/integrii/flaggy/master/logo.png" />
+<center>
+
+![flaggy](./assets/logo.png)
+
 <br />
-<a href="https://goreportcard.com/report/github.com/integrii/flaggy"><img src="https://goreportcard.com/badge/github.com/integrii/flaggy"></a>
-<a href="https://travis-ci.org/integrii/flaggy"><img src="https://travis-ci.org/integrii/flaggy.svg?branch=master"></a> 
-<a href="https://pkg.go.dev/github.com/integrii/flaggy"> <img src="https://img.shields.io/badge/go.dev-reference-007d9c?logo=go&logoColor=white"></a>
+<a href="https://goreportcard.com/report/github.com/luisnquin/flaggy"><img src="https://goreportcard.com/badge/github.com/luisnquin/flaggy"></a>
+<a href="https://travis-ci.org/luisnquin/flaggy"><img src="https://travis-ci.org/luisnquin/flaggy.svg?branch=master"></a>
+<a href="https://pkg.go.dev/github.com/luisnquin/flaggy"> <img src="https://img.shields.io/badge/go.dev-reference-007d9c?logo=go&logoColor=white"></a>
 <a href="http://unlicense.org/"><img src="https://img.shields.io/badge/license-Unlicense-blue.svg"></a>
-<a href="https://github.com/avelino/awesome-go"><img src="https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg"></a>
-<a href="https://gophers.slack.com/messages/CBMUGQYRH" target="_blank"><img src="https://img.shields.io/badge/slack-@gophers/flaggy-blue.svg?logo=slack"></a>
-</p>
+</center>
 
 Sensible and _fast_ command-line flag parsing with excellent support for **subcommands** and **positional values**. Flags can be at any position. Flaggy has no required project or package layout like [Cobra requires](https://github.com/spf13/cobra/issues/641), and **no external dependencies**!
 
-Check out the [go doc](http://pkg.go.dev/github.com/integrii/flaggy), [examples directory](https://github.com/integrii/flaggy/tree/master/examples), and [examples in this readme](https://github.com/integrii/flaggy#super-simple-example) to get started quickly. You can also read the Flaggy introduction post with helpful examples [on my weblog](https://ericgreer.info/post/a-better-flags-package-for-go/).
+Check out the [go doc](http://pkg.go.dev/github.com/luisnquin/flaggy), [examples directory](https://github.com/luisnquin/flaggy/tree/master/examples), and [examples in this readme](https://github.com/luisnquin/flaggy#super-simple-example) to get started quickly. You can also read the Flaggy introduction post with helpful examples [on my weblog](https://ericgreer.info/post/a-better-flags-package-for-go/).
 
 # Installation
 
-`go get -u github.com/integrii/flaggy`
+`go get -u github.com/luisnquin/flaggy`
 
 # Key Features
 
-- Very easy to use ([see examples below](https://github.com/integrii/flaggy#super-simple-example))
+- Very easy to use ([see examples below](https://github.com/luisnquin/flaggy#super-simple-example))
 - 35 different flag types supported
 - Any flag can be at any position
 - Pretty and readable help output by default
@@ -30,7 +30,7 @@ Check out the [go doc](http://pkg.go.dev/github.com/integrii/flaggy), [examples 
 - Nested subcommands
 - Both global and subcommand specific flags
 - Both global and subcommand specific positional parameters
-- [Customizable help templates for both the global command and subcommands](https://github.com/integrii/flaggy/blob/master/examples/customTemplate/main.go)
+- [Customizable help templates for both the global command and subcommands](https://github.com/luisnquin/flaggy/blob/master/examples/customTemplate/main.go)
 - Customizable appended/prepended help messages for both the global command and subcommands
 - Simple function that displays help followed by a custom message string
 - Flags and subcommands may have both a short and long name
@@ -91,7 +91,6 @@ flaggy.Parse()
 // Use the flag
 print(stringFlag)
 ```
-
 
 # Example with Subcommand
 
@@ -179,7 +178,7 @@ Best practice when using flaggy includes setting your program's name, descriptio
 ```go
 package main
 
-import "github.com/integrii/flaggy"
+import "github.com/luisnquin/flaggy"
 
 // Make a variable for the version which will be set at build time.
 var version = "unknown"
@@ -206,7 +205,7 @@ func init() {
   flaggy.DefaultParser.ShowHelpOnUnexpected = false
 
   // You can set a help prepend or append on the default parser.
-  flaggy.DefaultParser.AdditionalHelpPrepend = "http://github.com/integrii/flaggy"
+  flaggy.DefaultParser.AdditionalHelpPrepend = "http://github.com/luisnquin/flaggy"
   
   // Add a flag to the main program (this will be available in all subcommands as well).
   flaggy.String(&testVar, "tv", "testVariable", "A variable just for testing things!")
@@ -239,7 +238,7 @@ $ ./yourApp version
 Version: 1.0.3-a3db3
 $ ./yourApp --help
 Test Program - A little example program
-http://github.com/integrii/flaggy
+http://github.com/luisnquin/flaggy
 ```
 
 # Contributions
