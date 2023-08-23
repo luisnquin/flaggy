@@ -1,14 +1,15 @@
 
-<center>
+<div align="center">
 
-![flaggy](./assets/logo.png)
+![flaggy](../assets/logo.png)
 
 <br />
 <a href="https://goreportcard.com/report/github.com/luisnquin/flaggy"><img src="https://goreportcard.com/badge/github.com/luisnquin/flaggy"></a>
 <a href="https://travis-ci.org/luisnquin/flaggy"><img src="https://travis-ci.org/luisnquin/flaggy.svg?branch=master"></a>
 <a href="https://pkg.go.dev/github.com/luisnquin/flaggy"> <img src="https://img.shields.io/badge/go.dev-reference-007d9c?logo=go&logoColor=white"></a>
 <a href="http://unlicense.org/"><img src="https://img.shields.io/badge/license-Unlicense-blue.svg"></a>
-</center>
+
+</div>
 
 Sensible and _fast_ command-line flag parsing with excellent support for **subcommands** and **positional values**. Flags can be at any position. Flaggy has no required project or package layout like [Cobra requires](https://github.com/spf13/cobra/issues/641), and **no external dependencies**!
 
