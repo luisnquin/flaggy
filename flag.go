@@ -446,7 +446,7 @@ func (f *Flag) returnAssignmentVarValueAsString() (string, error) {
 
 	// depending on the type of the assignment variable, we convert the
 	// incoming string and assign it.  We only use pointers to variables
-	// in flagy.  No returning vars by value.
+	// in flaggy.  No returning vars by value.
 	switch f.AssignmentVar.(type) {
 	case *string:
 		v, _ := (f.AssignmentVar).(*string)

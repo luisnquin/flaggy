@@ -32,7 +32,7 @@ func main() {
 	subCmd.Description = "Description of subcommand"
 	p.AttachSubcommand(subCmd, 2)
 
-	// add a flag to the subcomand
+	// add a flag to the subcommand
 	subCmd.Int(&intFlagT, "i", "testInt", "This is a test int flag")
 
 	// add a bool flag to the root command

@@ -96,7 +96,7 @@ func Bool(assignmentVar *bool, shortName string, longName string, description st
 	DefaultParser.add(assignmentVar, shortName, longName, description)
 }
 
-// BoolSlice adds a new slice of bools flag
+// BoolSlice adds a new slice of booleans flag
 // Specify the flag multiple times to fill the slice
 func BoolSlice(assignmentVar *[]bool, shortName string, longName string, description string) {
 	DefaultParser.add(assignmentVar, shortName, longName, description)

@@ -178,7 +178,7 @@ func (h *Help) ExtractValues(p *Parser, message string) {
 			if len(commandsByPosition[i]) > 0 {
 				usageString = usageString + " [" + commandsByPosition[i] + "]"
 			} else {
-				// dont keep listing after the first position without any properties
+				// don't keep listing after the first position without any properties
 				// it will be impossible to reach anything beyond here anyway
 				break
 			}

@@ -460,7 +460,7 @@ func (sc *Subcommand) Bool(assignmentVar *bool, shortName string, longName strin
 	sc.add(assignmentVar, shortName, longName, description)
 }
 
-// BoolSlice adds a new slice of bools flag
+// BoolSlice adds a new slice of booleans flag
 // Specify the flag multiple times to fill the slice
 func (sc *Subcommand) BoolSlice(assignmentVar *[]bool, shortName string, longName string, description string) {
 	sc.add(assignmentVar, shortName, longName, description)

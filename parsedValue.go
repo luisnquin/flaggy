@@ -1,6 +1,6 @@
 package flaggy
 
-// parsedValue represents a flag or subcommand that was parsed.  Primairily used
+// parsedValue represents a flag or subcommand that was parsed.  Primarily used
 // to account for all parsed values in order to determine if unknown values were
 // passed to the root parser after all subcommands have been parsed.
 type parsedValue struct {
