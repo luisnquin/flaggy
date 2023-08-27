@@ -1,6 +1,7 @@
 package flaggy
 
 import (
+	"bytes"
 	"errors"
 	"fmt"
 	"os"
@@ -53,16 +54,18 @@ func NewParser(name string) *Parser {
 // binary at the 0 position in the array.  An error is returned if there
 // is a low level issue converting flags to their proper type.  No error
 // is returned for invalid arguments or missing require subcommands.
-func (p *Parser) ParseArgs(args []string) error {
+func (p *Parser) ParseArgs(args []string) (int, error) {
 	if p.parsed {
-		return errors.New("Parser.Parse() called twice on parser with name: " + " " + p.Name + " " + p.ShortName)
+		return 2, errors.New("Parser.Parse() called twice on parser with name: " + " " + p.Name + " " + p.ShortName)
 	}
+
 	p.parsed = true
 
 	debugPrint("Kicking off parsing with args:", args)
-	err := p.parse(p, args, 0)
+
+	code, err := p.parse(p, args, 0)
 	if err != nil {
-		return err
+		return code, err
 	}
 
 	// if we are set to crash on unexpected args, look for those here TODO
@@ -76,11 +79,12 @@ func (p *Parser) ParseArgs(args []string) error {
 			for _, a := range argsNotParsed {
 				argsNotParsedFlat = argsNotParsedFlat + " " + a
 			}
-			p.ShowHelpAndExit("Unknown arguments supplied: " + argsNotParsedFlat)
+
+			return 1, fmt.Errorf("unknown arguments: %s", argsNotParsedFlat)
 		}
 	}
 
-	return nil
+	return 0, nil
 }
 
 // findArgsNotInParsedValues finds arguments not used in parsed values.  The
@@ -159,7 +163,7 @@ func findArgsNotInParsedValues(args []string, parsedValues []parsedValue) []stri
 // ShowVersionAndExit shows the version of this parser
 func (p *Parser) ShowVersionAndExit() {
 	fmt.Fprintln(os.Stdout, p.Version)
-	exitOrPanic(0)
+	os.Exit(0)
 }
 
 // SetHelpTemplate sets the go template this parser will use when rendering
@@ -175,8 +179,8 @@ func (p *Parser) SetHelpTemplate(tmpl string) error {
 	return nil
 }
 
-// Parse calculates all flags and subcommands
-func (p *Parser) Parse() error {
+// Parse calculates all flags and subcommands. If error return an status code and error.
+func (p *Parser) Parse() (exitCode int, err error) {
 	return p.ParseArgs(os.Args[1:])
 }
 
@@ -186,24 +190,28 @@ func (p *Parser) ShowHelp() {
 	p.ShowHelpWithMessage("")
 }
 
-// ShowHelpAndExit shows parser help and exits with status code 2
-func (p *Parser) ShowHelpAndExit(message string) {
-	p.ShowHelpWithMessage(message)
-	exitOrPanic(2)
-}
+// // ShowHelpAndExit shows parser help and exits with status code 2
+// func (p *Parser) ShowHelpAndExit(message string) {
+// 	p.ShowHelpWithMessage(message)
+// 	exitOrPanic(2)
+// }
 
 // ShowHelpWithMessage shows the Help for this parser with an optional string error
 // message as a header.  The supplied subcommand will be the context of Help
 // displayed to the user.
-func (p *Parser) ShowHelpWithMessage(message string) {
+func (p *Parser) ShowHelpWithMessage(message string) (string, error) {
 	// create a new Help values template and extract values into it
 	help := Help{}
 	help.ExtractValues(p, message)
 
-	err := p.HelpTemplate.Execute(os.Stderr, help)
+	var b bytes.Buffer
+
+	err := p.HelpTemplate.Execute(&b, help)
 	if err != nil {
-		fmt.Fprintln(os.Stderr, "Error rendering Help template:", err)
+		return "", err
 	}
+
+	return b.String(), nil
 }
 
 // DisableShowVersionWithVersion disables the showing of version information

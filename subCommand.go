@@ -6,7 +6,6 @@ import (
 	"net"
 	"os"
 	"strconv"
-	"strings"
 	"time"
 )
 
@@ -33,14 +32,13 @@ type Subcommand struct {
 // NewSubcommand creates a new subcommand that can have flags or PositionalFlags
 // added to it.  The position starts with 1, not 0
 func NewSubcommand(name string) *Subcommand {
-	if len(name) == 0 {
-		fmt.Fprintln(os.Stderr, "Error creating subcommand (NewSubcommand()).  No subcommand name was specified.")
-		exitOrPanic(2)
+	if name == "" {
+		panic(fmt.Sprintf("missing subcommand name"))
 	}
-	newSC := &Subcommand{
+
+	return &Subcommand{
 		Name: name,
 	}
-	return newSC
 }
 
 // parseAllFlagsFromArgs parses the non-positional flags such as -f or -v=value
@@ -160,9 +158,9 @@ func (sc *Subcommand) parseAllFlagsFromArgs(p *Parser, args []string) ([]string,
 
 			// if the next arg was not found, then show a Help message
 			if !nextArgExists {
-				p.ShowHelpWithMessage(fmt.Sprintf("Error: unknown command or flag '%s'\n", arg))
-				exitOrPanic(2)
+				return []string{}, false, fmt.Errorf("unknown command or flag '%s'", arg)
 			}
+
 			valueSet, err := setValueForParsers(arg, nextArg, p, sc)
 			if err != nil {
 				return []string{}, false, err
@@ -213,7 +211,7 @@ func (sc *Subcommand) findAllParsedValues() []parsedValue {
 // depth specifies the non-flag subcommand positional depth.  A slice of flags
 // and subcommands parsed is returned so that the parser can ultimately decide
 // if there were any unexpected values supplied by the user
-func (sc *Subcommand) parse(p *Parser, args []string, depth int) error {
+func (sc *Subcommand) parse(p *Parser, args []string, depth int) (int, error) {
 	debugPrint("- Parsing subcommand", sc.Name, "with depth of", depth, "and args", args)
 
 	// if a command is parsed, its used
@@ -245,7 +243,7 @@ func (sc *Subcommand) parse(p *Parser, args []string, depth int) error {
 	// subcommand being parsed.
 	positionalOnlyArguments, helpRequested, err := sc.parseAllFlagsFromArgs(p, args)
 	if err != nil {
-		return err
+		return 1, err
 	}
 
 	// indicate that trailing arguments have been extracted, so that they aren't
@@ -313,25 +311,31 @@ func (sc *Subcommand) parse(p *Parser, args []string, depth int) error {
 				if foundSubcommandAtDepth {
 					// determine which name to use in upcoming help output
 					fmt.Fprintln(os.Stderr, sc.Name+":", "No subcommand or positional value found at position", strconv.Itoa(relativeDepth)+".")
-					var output string
-					for _, cmd := range sc.Subcommands {
-						if cmd.Hidden {
-							continue
-						}
-						output = output + " " + cmd.Name
-					}
-					// if there are available subcommands, let the user know
-					if len(output) > 0 {
-						output = strings.TrimLeft(output, " ")
-						fmt.Println("Available subcommands:", output)
-					}
-					exitOrPanic(2)
+
+					return 1, fmt.Errorf("unexpected argument at position: %d", relativeDepth)
+					// var output string
+
+					// for _, cmd := range sc.Subcommands {
+					// 	if cmd.Hidden {
+					// 		continue
+					// 	}
+					// 	output = output + " " + cmd.Name
+					// }
+					// // if there are available subcommands, let the user know
+					// if len(output) > 0 {
+					// 	output = strings.TrimLeft(output, " ")
+					// 	fmt.Println("Available subcommands:", output)
+					// }
+
+					// exitOrPanic(2)
 				}
 
 				// if there were not any flags or subcommands at this position at all, then
 				// throw an error (display Help if necessary)
-				p.ShowHelpWithMessage("Unexpected argument: " + v)
-				exitOrPanic(2)
+				// p.ShowHelpWithMessage("Unexpected argument: " + v)
+				// exitOrPanic(2)
+
+				return 2, fmt.Errorf("unexpected argument: %s", v)
 			} else {
 				// if no positional value was registered at this position, but the parser is not
 				// configured to show help when any unexpected command is found, add this positional
@@ -346,25 +350,23 @@ func (sc *Subcommand) parse(p *Parser, args []string, depth int) error {
 	// if help was requested and we should show help when h is passed,
 	if helpRequested && p.ShowHelpWithHFlag {
 		p.ShowHelp()
-		exitOrPanic(0)
+		os.Exit(0)
 	}
 
 	// find any positionals that were not used on subcommands that were
 	// found and throw help (unknown argument) in the global parse or subcommand
 	for _, pv := range p.PositionalFlags {
 		if pv.Required && !pv.Found {
-			p.ShowHelpWithMessage("Required global positional variable " + pv.Name + " not found at position " + strconv.Itoa(pv.Position))
-			exitOrPanic(2)
+			return 2, fmt.Errorf("required positional variable '%s' not found at position %d ", pv.Name, pv.Position)
 		}
 	}
 	for _, pv := range sc.PositionalFlags {
 		if pv.Required && !pv.Found {
-			p.ShowHelpWithMessage("Required positional of subcommand " + sc.Name + " named " + pv.Name + " not found at position " + strconv.Itoa(pv.Position))
-			exitOrPanic(2)
+			return 2, fmt.Errorf("required positional of subcommand %s named %s not found at position %d ", sc.Name, pv.Name, pv.Position)
 		}
 	}
 
-	return nil
+	return 0, nil
 }
 
 // addParsedFlag makes it easy to append flag values parsed by the subcommand
@@ -743,7 +745,7 @@ func (sc *Subcommand) exitBecauseOfVersionFlagConflict(flagName string) {
 You must either change the flag's name, or disable flaggy's internal version
 flag with 'flaggy.DefaultParser.ShowVersionWithVersionFlag = false'.  If you are using
 a custom parser, you must instead set '.ShowVersionWithVersionFlag = false' on it.`)
-	exitOrPanic(1)
+	os.Exit(1)
 }
 
 // exitBecauseOfHelpFlagConflict exits the program with a message about how to prevent
@@ -754,5 +756,5 @@ func (sc *Subcommand) exitBecauseOfHelpFlagConflict(flagName string) {
 You must either change the flag's name, or disable flaggy's internal help
 flag with 'flaggy.DefaultParser.ShowHelpWithHFlag = false'.  If you are using
 a custom parser, you must instead set '.ShowHelpWithHFlag = false' on it.`)
-	exitOrPanic(1)
+	os.Exit(1)
 }

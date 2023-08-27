@@ -6,11 +6,11 @@ func TestDoubleParse(t *testing.T) {
 	ResetParser()
 	DefaultParser.ShowHelpOnUnexpected = false
 
-	err := DefaultParser.Parse()
+	_, err := DefaultParser.Parse()
 	if err != nil {
 		t.Fatal(err)
 	}
-	err = DefaultParser.Parse()
+	_, err = DefaultParser.Parse()
 	if err == nil {
 		t.Fatal(err)
 	}

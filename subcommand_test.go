@@ -155,7 +155,7 @@ func TestTypoSubcommand(t *testing.T) {
 	newSCB := flaggy.NewSubcommand("TestTypoSubcommandB")
 	p.AttachSubcommand(newSCA, 1)
 	p.AttachSubcommand(newSCB, 1)
-	if err := p.ParseArgs(args); err != nil {
+	if _, err := p.ParseArgs(args); err != nil {
 		t.Fatalf("got: %s; want: no error", err)
 	}
 }
@@ -167,7 +167,7 @@ func TestIgnoreUnexpected(t *testing.T) {
 	args := []string{"unexpectedArg"}
 	newSCA := flaggy.NewSubcommand("TestTypoSubcommandA")
 	p.AttachSubcommand(newSCA, 1)
-	if err := p.ParseArgs(args); err != nil {
+	if _, err := p.ParseArgs(args); err != nil {
 		t.Fatalf("got: %s; want: no error", err)
 	}
 }
@@ -183,7 +183,7 @@ func TestSubcommandHelp(t *testing.T) {
 	p := flaggy.NewParser("TestSubcommandHelp")
 	p.ShowHelpOnUnexpected = true
 	args := []string{"unexpectedArg"}
-	if err := p.ParseArgs(args); err != nil {
+	if _, err := p.ParseArgs(args); err != nil {
 		t.Fatalf("got: %s; want: no error", err)
 	}
 }
@@ -198,7 +198,7 @@ func TestHelpWithHFlagA(t *testing.T) {
 	p := flaggy.NewParser("TestHelpWithHFlag")
 	p.ShowHelpWithHFlag = true
 	args := []string{"-h"}
-	if err := p.ParseArgs(args); err != nil {
+	if _, err := p.ParseArgs(args); err != nil {
 		t.Fatalf("got: %s; want: no error", err)
 	}
 }
@@ -213,7 +213,7 @@ func TestHelpWithHFlagB(t *testing.T) {
 	p := flaggy.NewParser("TestHelpWithHFlag")
 	p.ShowHelpWithHFlag = true
 	args := []string{"--help"}
-	if err := p.ParseArgs(args); err != nil {
+	if _, err := p.ParseArgs(args); err != nil {
 		t.Fatalf("got: %s; want: no error", err)
 	}
 }
@@ -229,7 +229,7 @@ func TestVersionWithVFlagB(t *testing.T) {
 	p.ShowVersionWithVersionFlag = true
 	p.Version = "TestVersionWithVFlagB 0.0.0a"
 	args := []string{"--version"}
-	if err := p.ParseArgs(args); err != nil {
+	if _, err := p.ParseArgs(args); err != nil {
 		t.Fatalf("got: %s; want: no error", err)
 	}
 }
@@ -252,7 +252,7 @@ func TestSubcommandParse(t *testing.T) {
 
 	// override os args and parse them
 	os.Args = []string{"binaryName", "testSubcommand", "testPositional"}
-	if err := p.Parse(); err != nil {
+	if _, err := p.Parse(); err != nil {
 		t.Fatalf("got: %s; want: no error", err)
 	}
 
@@ -275,7 +275,7 @@ func TestBadSubcommand(t *testing.T) {
 
 	//  test what happens if you add a bad subcommand
 	os.Args = []string{"test"}
-	if err := p.Parse(); err != nil {
+	if _, err := p.Parse(); err != nil {
 		t.Fatalf("got: %s; want: no error", err)
 	}
 }
@@ -292,7 +292,7 @@ func TestBadPositional(t *testing.T) {
 
 	//  test what happens if you add a bad subcommand
 	os.Args = []string{"test", "badPositional"}
-	err = p.Parse()
+	_, err = p.Parse()
 	if err != nil {
 		t.Fatal("Threw an error when bad positional was passed, but shouldn't have")
 	}
@@ -347,7 +347,7 @@ func BenchmarkSubcommandParse(b *testing.B) {
 
 		// override os args and parse them
 		os.Args = []string{"binaryName", "testSubcommand", "testPositional"}
-		err := p.Parse()
+		_, err := p.Parse()
 		if err != nil {
 			b.Fatal("Error parsing args: " + err.Error())
 		}
@@ -789,7 +789,7 @@ func TestSCBoolFlag(t *testing.T) {
 	p.AttachSubcommand(newSC, 1)
 
 	os.Args = []string{"binaryName", "testSubcommand", "--flag"}
-	err := p.Parse()
+	_, err := p.Parse()
 	if err != nil {
 		t.Fatal("Error parsing args: " + err.Error())
 	}
@@ -808,7 +808,7 @@ func TestNestedSCBoolFlag(t *testing.T) {
 	p.AttachSubcommand(newSC, 1)
 
 	os.Args = []string{"binaryName", "mainSubcommand", "subSubCommand", "--flag"}
-	err := p.Parse()
+	_, err := p.Parse()
 	if err != nil {
 		t.Fatal("Error parsing args: " + err.Error())
 	}
