@@ -8,10 +8,8 @@ package flaggy // import "github.com/luisnquin/flaggy"
 
 import (
 	"fmt"
-	"log"
 	"net"
 	"os"
-	"strconv"
 	"strings"
 	"time"
 )
@@ -61,23 +59,27 @@ func ResetParser() {
 
 // Parse parses flags as requested in the default package parser.  All trailing arguments
 // that result from parsing are placed in the global TrailingArguments variable.
-func Parse() {
-	err := DefaultParser.Parse()
+func Parse() (int, error) {
+	code, err := DefaultParser.Parse()
 	TrailingArguments = DefaultParser.TrailingArguments
 	if err != nil {
-		log.Panicln("Error from argument parser:", err)
+		return code, err
 	}
+
+	return 0, nil
 }
 
 // ParseArgs parses the passed args as if they were the arguments to the
 // running binary.  Targets the default main parser for the package.  All trailing
 // arguments are set in the global TrailingArguments variable.
-func ParseArgs(args []string) {
-	err := DefaultParser.ParseArgs(args)
+func ParseArgs(args []string) error {
+	_, err := DefaultParser.ParseArgs(args)
 	TrailingArguments = DefaultParser.TrailingArguments
 	if err != nil {
-		log.Panicln("Error from argument parser:", err)
+		return err
 	}
+
+	return nil
 }
 
 // String adds a new string flag
@@ -313,23 +315,8 @@ func SetName(name string) {
 	DefaultParser.Name = name
 }
 
-// ShowHelpAndExit shows parser help and exits with status code 2
-func ShowHelpAndExit(message string) {
-	ShowHelp(message)
-	exitOrPanic(2)
-}
-
 // PanicInsteadOfExit is used when running tests
 var PanicInsteadOfExit bool
-
-// exitOrPanic panics instead of calling os.Exit so that tests can catch
-// more failures
-func exitOrPanic(code int) {
-	if PanicInsteadOfExit {
-		panic("Panic instead of exit with code: " + strconv.Itoa(code))
-	}
-	os.Exit(code)
-}
 
 // ShowHelpOnUnexpectedEnable enables the ShowHelpOnUnexpected behavior on the
 // default parser.  This causes unknown inputs to error out.

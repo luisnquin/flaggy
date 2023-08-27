@@ -175,7 +175,7 @@ func TestParsePositionalsA(t *testing.T) {
 	subCommand.AddPositionalValue(&positionalB, "PositionalB", 2, false, "PositionalB test value")
 
 	// parse input
-	err = parser.ParseArgs(inputLine)
+	_, err = parser.ParseArgs(inputLine)
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -111,7 +111,7 @@ func TestHelpOutput(t *testing.T) {
 		os.Stderr = savedStderr
 	}()
 
-	if err := p.ParseArgs([]string{"subcommandA", "subcommandB", "hiddenPositional1"}); err != nil {
+	if _, err := p.ParseArgs([]string{"subcommandA", "subcommandB", "hiddenPositional1"}); err != nil {
 		t.Fatalf("got: %s; want: no error", err)
 	}
 	p.ShowHelpWithMessage("This is a help message on exit")

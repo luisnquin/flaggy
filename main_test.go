@@ -41,14 +41,3 @@ func TestSetName(t *testing.T) {
 		t.Fatal("set name does not match")
 	}
 }
-
-func TestShowHelpAndExit(t *testing.T) {
-	flaggy.PanicInsteadOfExit = true
-	defer func() {
-		r := recover()
-		if r == nil {
-			t.Fatal("Expected panic on show help and exit call")
-		}
-	}()
-	flaggy.ShowHelpAndExit("test show help and exit")
-}
