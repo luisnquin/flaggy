@@ -297,7 +297,12 @@ func AttachSubcommand(subcommand *Subcommand, relativePosition int) {
 
 // ShowHelp shows parser help
 func ShowHelp(message string) {
-	DefaultParser.ShowHelpWithMessage(message)
+	message, err := DefaultParser.ShowHelpWithMessage(message)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Fprintln(os.Stderr, message)
 }
 
 // SetDescription sets the description of the default package command parser
