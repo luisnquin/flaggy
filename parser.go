@@ -187,7 +187,12 @@ func (p *Parser) Parse() (exitCode int, err error) {
 // ShowHelp shows Help without an error message
 func (p *Parser) ShowHelp() {
 	debugPrint("showing help for", p.subcommandContext.Name)
-	p.ShowHelpWithMessage("")
+
+	if m, err := p.ShowHelpWithMessage(""); err != nil {
+		panic(err)
+	} else {
+		fmt.Fprintln(os.Stderr, m)
+	}
 }
 
 // // ShowHelpAndExit shows parser help and exits with status code 2

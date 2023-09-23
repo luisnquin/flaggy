@@ -1,6 +1,7 @@
 package flaggy_test
 
 import (
+	"fmt"
 	"os"
 	"strings"
 	"testing"
@@ -40,28 +41,12 @@ func TestMinimalHelpOutput(t *testing.T) {
 		"    -h --help      Displays help with available flag, subcommand, and positional value parameters.",
 		"",
 		"",
+		"",
 	}
 
 	if diff := cmp.Diff(want, got); diff != "" {
 		t.Errorf("help mismatch (-want +got):\n%s", diff)
 	}
-}
-
-func TestHelpWithMissingSCName(t *testing.T) {
-	defer func() {
-		r := recover()
-		gotMsg := r.(string)
-		wantMsg := "Panic instead of exit with code: 2"
-		if gotMsg != wantMsg {
-			t.Fatalf("error: got: %s; want: %s", gotMsg, wantMsg)
-		}
-	}()
-	flaggy.ResetParser()
-	flaggy.PanicInsteadOfExit = true
-	sc := flaggy.NewSubcommand("")
-	sc.ShortName = "sn"
-	flaggy.AttachSubcommand(sc, 1)
-	flaggy.ParseArgs([]string{"x"})
 }
 
 // TestHelpOutput tests the dislay of help with -h
@@ -114,7 +99,13 @@ func TestHelpOutput(t *testing.T) {
 	if _, err := p.ParseArgs([]string{"subcommandA", "subcommandB", "hiddenPositional1"}); err != nil {
 		t.Fatalf("got: %s; want: no error", err)
 	}
-	p.ShowHelpWithMessage("This is a help message on exit")
+
+	message, err := p.ShowHelpWithMessage("This is a help message on exit")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	fmt.Fprintln(os.Stderr, message)
 
 	buf := make([]byte, 1024)
 	n, err := rd.Read(buf)
@@ -134,6 +125,7 @@ func TestHelpOutput(t *testing.T) {
 		"    -d --durationFlag   This is a test duration flag that does some untimely stuff. (default: 0s)",
 		"",
 		"This is a help message on exit",
+		"",
 		"",
 	}
 

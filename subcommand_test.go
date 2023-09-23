@@ -3,6 +3,7 @@ package flaggy_test
 import (
 	"net"
 	"os"
+	"strings"
 	"testing"
 	"time"
 
@@ -54,7 +55,10 @@ func TestExitOnUnknownFlag(t *testing.T) {
 	flaggy.ResetParser()
 	flaggy.String(&expectedFlag, "f", "flag", "an expected positional flag")
 	flaggy.AddPositionalValue(&expectedPositional, "positionalTest", 1, true, "A test positional value")
-	flaggy.ParseArgs([]string{"positionalHere", "-f", "flagHere", "unexpectedValue"})
+
+	if err := flaggy.ParseArgs([]string{"positionalHere", "-f", "flagHere", "unexpectedValue"}); err != nil {
+		panic(err)
+	}
 }
 
 // TestExitOnUnknownFlagWithValue tests that when an unknown flag with a value
@@ -64,8 +68,7 @@ func TestExitOnUnknownFlagWithValue(t *testing.T) {
 	flaggy.ResetParser()
 	flaggy.ShowHelpOnUnexpectedEnable()
 	defer func() {
-		r := recover()
-		if r == nil {
+		if r := recover(); r == nil {
 			t.Fatal("Expected crash on unknown flag with value")
 		}
 	}()
@@ -76,7 +79,10 @@ func TestExitOnUnknownFlagWithValue(t *testing.T) {
 	flaggy.ResetParser()
 	flaggy.String(&expectedFlag, "f", "flag", "an expected positional flag")
 	flaggy.AddPositionalValue(&expectedPositional, "positionalTest", 1, true, "A test positional value")
-	flaggy.ParseArgs([]string{"positionalHere", "-f", "flagHere", "--unexpectedValue=true"})
+
+	if err := flaggy.ParseArgs([]string{"positionalHere", "-f", "flagHere", "--unexpectedValue=true"}); err != nil {
+		panic(err)
+	}
 }
 
 // TestDoublePositional tests errors when two positionals are
@@ -103,11 +109,16 @@ func TestNextArgDoesNotExist(t *testing.T) {
 			t.Fatal("Expected crash when next arg not specific")
 		}
 	}()
+
 	flaggy.ResetParser()
 	flaggy.PanicInsteadOfExit = true
+
 	var test string
 	flaggy.String(&test, "t", "test", "Description goes here")
-	flaggy.ParseArgs([]string{"-t"})
+
+	if err := flaggy.ParseArgs([]string{"-t"}); err != nil {
+		panic(err)
+	}
 }
 
 func TestSubcommandHidden(t *testing.T) {
@@ -142,21 +153,22 @@ func TestRequiredPositional(t *testing.T) {
 
 // TestTypoSubcommand tests what happens when an invalid subcommand is passed
 func TestTypoSubcommand(t *testing.T) {
-	defer func() {
-		r := recover()
-		if r == nil {
-			t.Fatal("Expected crash on subcommand typo")
-		}
-	}()
 	p := flaggy.NewParser("TestTypoSubcommand")
 	p.ShowHelpOnUnexpected = true
+
 	args := []string{"unexpectedArg"}
 	newSCA := flaggy.NewSubcommand("TestTypoSubcommandA")
 	newSCB := flaggy.NewSubcommand("TestTypoSubcommandB")
+
 	p.AttachSubcommand(newSCA, 1)
 	p.AttachSubcommand(newSCB, 1)
-	if _, err := p.ParseArgs(args); err != nil {
-		t.Fatalf("got: %s; want: no error", err)
+
+	if _, err := p.ParseArgs(args); err == nil {
+		t.Fatal("got: no error; want: unexpected argument")
+	} else {
+		if !strings.Contains(err.Error(), "unexpected argument") {
+			t.Fatalf("got: %s, want: unexpected argument", err.Error())
+		}
 	}
 }
 
@@ -174,17 +186,16 @@ func TestIgnoreUnexpected(t *testing.T) {
 
 // TestSubcommandHelp tests displaying of help on unspecified commands
 func TestSubcommandHelp(t *testing.T) {
-	defer func() {
-		r := recover()
-		if r == nil {
-			t.Fatal("Expected crash on subcommand help display")
-		}
-	}()
 	p := flaggy.NewParser("TestSubcommandHelp")
 	p.ShowHelpOnUnexpected = true
 	args := []string{"unexpectedArg"}
-	if _, err := p.ParseArgs(args); err != nil {
-		t.Fatalf("got: %s; want: no error", err)
+
+	if _, err := p.ParseArgs(args); err == nil {
+		t.Fatal("got: no error; want: unexpected argument")
+	} else {
+		if !strings.Contains(err.Error(), "unexpected argument") {
+			t.Fatalf("got: %s, want: unexpected argument", err.Error())
+		}
 	}
 }
 
@@ -826,5 +837,9 @@ func TestParseErrorsAreReportedRegression(t *testing.T) {
 	intFlag := 42
 	flaggy.Int(&intFlag, "i", "int", "dummy")
 	os.Args = []string{"prog", "--int", "abc"}
-	flaggy.Parse()
+
+	_, err := flaggy.Parse()
+	if err != nil {
+		panic(err)
+	}
 }

@@ -64,8 +64,8 @@ func (sc *Subcommand) parseAllFlagsFromArgs(p *Parser, args []string) ([]string,
 		debugPrint("parsing arg:", arg)
 
 		// evaluate if there is a following arg to avoid panics
-		var nextArgExists bool
-		var nextArg string
+		nextArg, nextArgExists := "", false
+
 		if len(args)-1 >= i+1 {
 			nextArgExists = true
 			nextArg = args[i+1]
@@ -76,6 +76,7 @@ func (sc *Subcommand) parseAllFlagsFromArgs(p *Parser, args []string) ([]string,
 			if !p.trailingArgumentsExtracted {
 				p.TrailingArguments = append(p.TrailingArguments, arg)
 			}
+
 			continue
 		}
 
@@ -158,7 +159,7 @@ func (sc *Subcommand) parseAllFlagsFromArgs(p *Parser, args []string) ([]string,
 
 			// if the next arg was not found, then show a Help message
 			if !nextArgExists {
-				return []string{}, false, fmt.Errorf("unknown command or flag '%s'", arg)
+				return []string{}, false, fmt.Errorf("missing argument for command or flag '%s'", arg)
 			}
 
 			valueSet, err := setValueForParsers(arg, nextArg, p, sc)
@@ -243,7 +244,7 @@ func (sc *Subcommand) parse(p *Parser, args []string, depth int) (int, error) {
 	// subcommand being parsed.
 	positionalOnlyArguments, helpRequested, err := sc.parseAllFlagsFromArgs(p, args)
 	if err != nil {
-		return 1, err
+		return 2, err
 	}
 
 	// indicate that trailing arguments have been extracted, so that they aren't

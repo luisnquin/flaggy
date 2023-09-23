@@ -12,6 +12,7 @@ func setValueForParsers(key string, value string, parsers ...ArgumentParser) (bo
 		if err != nil {
 			return valueWasSet, err
 		}
+
 		if valueWasSet {
 			return true, nil
 		}
