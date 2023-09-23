@@ -311,7 +311,7 @@ func (sc *Subcommand) parse(p *Parser, args []string, depth int) (int, error) {
 				// as a suggestion to the user before exiting.
 				if foundSubcommandAtDepth {
 					// determine which name to use in upcoming help output
-					fmt.Fprintln(os.Stderr, sc.Name+":", "No subcommand or positional value found at position", strconv.Itoa(relativeDepth)+".")
+					// fmt.Fprintln(os.Stderr, sc.Name+":", "No subcommand or positional value found at position", strconv.Itoa(relativeDepth)+".")
 
 					return 1, fmt.Errorf("unexpected argument at position: %d", relativeDepth)
 					// var output string
