@@ -320,6 +320,11 @@ func SetName(name string) {
 	DefaultParser.Name = name
 }
 
+// SetExamples sets the examples of the default package command parser
+func SetExamples(examples []string) {
+	DefaultParser.Examples = examples
+}
+
 // PanicInsteadOfExit is used when running tests
 var PanicInsteadOfExit bool
 

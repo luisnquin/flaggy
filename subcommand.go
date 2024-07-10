@@ -18,7 +18,8 @@ type Subcommand struct {
 	Name                  string
 	ShortName             string
 	Description           string
-	Position              int // the position of this subcommand, not including flags
+	Examples              []string // the usage examples of the parser.
+	Position              int      // the position of this subcommand, not including flags
 	Subcommands           []*Subcommand
 	Flags                 []*Flag
 	PositionalFlags       []*PositionalValue

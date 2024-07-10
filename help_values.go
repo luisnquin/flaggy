@@ -13,6 +13,7 @@ type Help struct {
 	Positionals    []HelpPositional
 	Flags          []HelpFlag
 	UsageString    string
+	Examples       []string
 	CommandName    string
 	PrependMessage string
 	AppendMessage  string
@@ -64,6 +65,8 @@ func (h *Help) ExtractValues(p *Parser, message string) {
 	h.CommandName = p.subcommandContext.Name
 	// description
 	h.Description = p.subcommandContext.Description
+
+	h.Examples = p.subcommandContext.Examples
 
 	maxLength := getLongestNameLength(p.subcommandContext.Subcommands, 0)
 
